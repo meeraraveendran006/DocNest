@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Documents — DocNest{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📁 My Documents</h1>
+    <p>All your documents in one place</p>
+</div>
+
+<!-- Search -->
+<form method="GET" class="search-bar">
+    <input type="text" name="search" placeholder="🔍 Search documents..." value="{{ search }}">
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a href="{{ url_for('documents') }}" class="btn btn-ghost">Clear</a>
+</form>
+
+<!-- Category Filter -->
+<div class="category-filter">
+    <a href="{{ url_for('documents') }}" class="filter-btn {% if category == 'all' %}active{% endif %}">All</a>
+    <a href="{{ url_for('documents', category='identity') }}" class="filter-btn {% if category == 'identity' %}active{% endif %}">🪪 Identity</a>
+    <a href="{{ url_for('documents', category='education') }}" class="filter-btn {% if category == 'education' %}active{% endif %}">🎓 Education</a>
+    <a href="{{ url_for('documents', category='medical') }}" class="filter-btn {% if category == 'medical' %}active{% endif %}">🏥 Medical</a>
+    <a href="{{ url_for('documents', category='finance') }}" class="filter-btn {% if category == 'finance' %}active{% endif %}">💰 Finance</a>
+    <a href="{{ url_for('documents', category='other') }}" class="filter-btn {% if category == 'other' %}active{% endif %}">📄 Other</a>
+</div>
+
+{% if docs %}
+<div class="doc-grid">
+    {% for doc in docs %}
+    <div class="doc-card">
+        <div class="doc-icon">
+            {% if doc.category == 'identity' %}🪪
+            {% elif doc.category == 'education' %}🎓
+            {% elif doc.category == 'medical' %}🏥
+            {% elif doc.category == 'finance' %}💰
+            {% else %}📄{% endif %}
+        </div>
+        <div class="doc-name">{{ doc.name }}</div>
+        <span class="doc-category cat-{{ doc.category }}">{{ doc.category|title }}</span>
+        <div class="doc-meta">
+            Uploaded {{ doc.uploaded_at.strftime('%d %b %Y') }}
+            {% if doc.expiry_date %} · Expires {{ doc.expiry_date.strftime('%d %b %Y') }}{% endif %}
+            {% if doc.family_member %} · {{ doc.family_member.name }}{% endif %}
+        </div>
+        {% if doc.ai_summary %}
+        <div class="summary-box" style="display:block">{{ doc.ai_summary }}</div>
+        {% endif %}
+        <div class="doc-actions">
+            <a href="{{ url_for('view_doc', doc_id=doc.id) }}" class="btn btn-ghost btn-sm" target="_blank">View</a>
+            <button class="btn btn-ghost btn-sm" onclick="shareDoc({{ doc.id }})">Share</button>
+            <button class="btn btn-ghost btn-sm" onclick="summarizeDoc({{ doc.id }}, this)">AI</button>
+            <a href="{{ url_for('delete_doc', doc_id=doc.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Delete this document?')">Delete</a>
+        </div>
+        <div class="summary-box" id="summary-{{ doc.id }}"></div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-state-icon">🔍</div>
+    <h3>No documents found</h3>
+    <p>Try a different search or upload your first document</p>
+    <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload Document</a>
+</div>
+{% endif %}
+
+<div id="toast" class="toast"></div>
+{% endblock %}

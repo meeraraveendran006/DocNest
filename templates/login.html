@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Login — DocNest{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-left">
+        <div class="auth-brand">
+            <span class="logo-icon">🗂️</span>
+            <span class="logo-text">DocNest</span>
+        </div>
+        <h2 class="auth-tagline">Safe. Sorted. Always.</h2>
+        <p class="auth-desc">Your entire document life, organized in one secure place.</p>
+        <div class="auth-features">
+            <div class="auth-feature">✅ Aadhaar, PAN, Marksheets</div>
+            <div class="auth-feature">✅ AI Document Summaries</div>
+            <div class="auth-feature">✅ Family Vault</div>
+            <div class="auth-feature">✅ Expiry Alerts</div>
+        </div>
+    </div>
+    <div class="auth-right">
+        <div class="auth-card">
+            <h2>Welcome back</h2>
+            <p class="auth-sub">Login to your DocNest account</p>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="you@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login →</button>
+            </form>
+            <p class="auth-switch">Don't have an account? <a href="{{ url_for('register') }}">Sign up free</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

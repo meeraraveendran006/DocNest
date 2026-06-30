@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Upload — DocNest{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>⬆️ Upload Document</h1>
+    <p>Add a new document to your vault</p>
+</div>
+
+<div class="card" style="max-width: 600px;">
+    <form method="POST" enctype="multipart/form-data">
+
+        <div class="upload-zone" onclick="document.getElementById('file').click()">
+            <div class="upload-zone-icon">📂</div>
+            <p>Click to select a file</p>
+            <p style="font-size:12px; margin-top:8px;">PDF, JPG, PNG — max 16MB</p>
+            <input type="file" name="file" id="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="updateFileName(this)">
+        </div>
+        <p id="file-name" style="font-size:13px; color:var(--teal); margin-bottom:16px; text-align:center;"></p>
+
+        <div class="form-group">
+            <label>Document Name</label>
+            <input type="text" name="name" placeholder="e.g. Aadhaar Card, 10th Marksheet" required>
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category" required>
+                <option value="">Select category</option>
+                <option value="identity">🪪 Identity (Aadhaar, PAN, Passport)</option>
+                <option value="education">🎓 Education (Marksheets, Certificates)</option>
+                <option value="medical">🏥 Medical (Reports, Prescriptions)</option>
+                <option value="finance">💰 Finance (Bank, Insurance, Tax)</option>
+                <option value="other">📄 Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Expiry Date (optional)</label>
+            <input type="date" name="expiry_date">
+        </div>
+
+        <div class="form-group">
+            <label>For Family Member (optional)</label>
+            <select name="family_member_id">
+                <option value="">Myself</option>
+                {% for member in family %}
+                <option value="{{ member.id }}">{{ member.name }} ({{ member.relation }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">Upload Document →</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — DocNest{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Welcome back, {{ current_user.name.split()[0] }} 👋</h1>
+    <p>Here's an overview of your document vault</p>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">📁</div>
+        <div class="stat-value">{{ docs|length }}</div>
+        <div class="stat-label">Total Documents</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">👨‍👩‍👧</div>
+        <div class="stat-value">{{ family|length }}</div>
+        <div class="stat-label">Family Members</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🔔</div>
+        <div class="stat-value">{{ expiring|length }}</div>
+        <div class="stat-label">Expiring Soon</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🗂️</div>
+        <div class="stat-value">{{ categories|length }}</div>
+        <div class="stat-label">Categories</div>
+    </div>
+</div>
+
+<!-- Expiry Alerts -->
+{% if expiring %}
+<div class="section-header">
+    <h2>⚠️ Expiring Soon</h2>
+</div>
+{% for item in expiring %}
+<div class="expiry-alert">
+    <span>📄 {{ item.doc.name }}</span>
+    <span class="expiry-days">
+        {% if item.days < 0 %}Expired!
+        {% elif item.days == 0 %}Expires today!
+        {% else %}{{ item.days }} days left{% endif %}
+    </span>
+</div>
+{% endfor %}
+<br>
+{% endif %}
+
+<!-- Recent Documents -->
+<div class="section-header">
+    <h2>📁 Recent Documents</h2>
+    <a href="{{ url_for('documents') }}" class="btn btn-ghost btn-sm">View All</a>
+</div>
+
+{% if docs %}
+<div class="doc-grid">
+    {% for doc in docs[:6] %}
+    <div class="doc-card">
+        <div class="doc-icon">
+            {% if doc.category == 'identity' %}🪪
+            {% elif doc.category == 'education' %}🎓
+            {% elif doc.category == 'medical' %}🏥
+            {% elif doc.category == 'finance' %}💰
+            {% else %}📄{% endif %}
+        </div>
+        <div class="doc-name">{{ doc.name }}</div>
+        <span class="doc-category cat-{{ doc.category }}">{{ doc.category|title }}</span>
+        <div class="doc-meta">
+            Uploaded {{ doc.uploaded_at.strftime('%d %b %Y') }}
+            {% if doc.expiry_date %} · Expires {{ doc.expiry_date.strftime('%d %b %Y') }}{% endif %}
+        </div>
+        <div class="doc-actions">
+            <a href="{{ url_for('view_doc', doc_id=doc.id) }}" class="btn btn-ghost btn-sm" target="_blank">View</a>
+            <button class="btn btn-ghost btn-sm" onclick="shareDoc({{ doc.id }})">Share</button>
+            <button class="btn btn-ghost btn-sm" onclick="summarizeDoc({{ doc.id }}, this)">AI Summary</button>
+        </div>
+        <div class="summary-box" id="summary-{{ doc.id }}"></div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-state-icon">📭</div>
+    <h3>No documents yet</h3>
+    <p>Upload your first document to get started</p>
+    <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload Document</a>
+</div>
+{% endif %}
+
+<div id="toast" class="toast"></div>
+{% endblock %}

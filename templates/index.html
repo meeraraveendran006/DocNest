@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}DocNest — Safe. Sorted. Always.{% endblock %}
+
+{% block content %}
+<div class="landing">
+
+    <!-- Hero Section -->
+    <nav class="landing-nav">
+        <div class="logo">
+            <span class="logo-icon">🗂️</span>
+            <span class="logo-text">DocNest</span>
+        </div>
+        <div class="nav-actions">
+            <a href="{{ url_for('login') }}" class="btn btn-ghost">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-badge">🇮🇳 Built for India</div>
+        <h1 class="hero-title">
+            Your Documents,<br>
+            <span class="gradient-text">Always Home.</span>
+        </h1>
+        <p class="hero-sub">Safe. Sorted. Always. — Store, find and share all your documents in one secure place. Aadhaar, PAN, marksheets, medical reports — everything organized.</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Start for Free →</a>
+            <a href="#features" class="btn btn-ghost btn-lg">See Features</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Private & Secure</span></div>
+            <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Document Types</span></div>
+            <div class="stat"><span class="stat-num">AI</span><span class="stat-label">Powered Summaries</span></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Everything you need</h2>
+        <p class="section-sub">One app. Every document. Zero panic.</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>Smart Storage</h3>
+                <p>Upload PDFs, images and certificates. Auto-categorized by type — Identity, Education, Medical, Finance.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI Summarizer</h3>
+                <p>Upload any document and our AI instantly explains what it says in simple English. No more confusing jargon.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <h3>Expiry Alerts</h3>
+                <p>Never let your passport or license expire. Get alerts 30 days before any document expires.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👨‍👩‍👧</div>
+                <h3>Family Vault</h3>
+                <p>Manage documents for your entire family. One account, every member, all organized.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>Instant Sharing</h3>
+                <p>Share any document with a secure link that expires in 24 hours. No WhatsApp forwards needed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Find in Seconds</h3>
+                <p>Search any document instantly. Filter by category, member, or date. Never hunt for files again.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2>Stop losing your documents.</h2>
+        <p>Join thousands of Indians who finally have their documents sorted.</p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Create Free Account →</a>
+    </section>
+
+    <footer class="footer">
+        <p>Made  by Meera &nbsp;|&nbsp; DocNest 2026 &nbsp;|&nbsp; Safe. Sorted. Always.</p>
+    </footer>
+
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Family — DocNest{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>👨‍👩‍👧 Family Vault</h1>
+    <p>Manage documents for your entire family</p>
+</div>
+
+<!-- Add Member -->
+<div class="card" style="max-width:500px; margin-bottom:32px;">
+    <h2 style="font-size:18px; margin-bottom:20px;">Add Family Member</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="e.g. Ramesh Sharma" required>
+        </div>
+        <div class="form-group">
+            <label>Relation</label>
+            <select name="relation" required>
+                <option value="">Select relation</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Spouse">Spouse</option>
+                <option value="Sibling">Sibling</option>
+                <option value="Child">Child</option>
+                <option value="Grandparent">Grandparent</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Member →</button>
+    </form>
+</div>
+
+<!-- Family Members -->
+{% if members %}
+<div class="section-header">
+    <h2>Your Family ({{ members|length }})</h2>
+</div>
+<div class="family-grid">
+    {% for member in members %}
+    <div class="family-card">
+        <div class="family-avatar">{{ member.name[0].upper() }}</div>
+        <div class="family-name">{{ member.name }}</div>
+        <div class="family-relation">{{ member.relation }}</div>
+        <br>
+        <a href="{{ url_for('documents') }}" class="btn btn-ghost btn-sm">View Docs</a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-state-icon">👨‍👩‍👧</div>
+    <h3>No family members yet</h3>
+    <p>Add family members to manage their documents too</p>
+</div>
+{% endif %}
+{% endblock %}
